@@ -2,26 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+/* animation */
+@keyframes bounceLow {
+    0%, 100% {
+        transform: translateY(-10px);
+        animation-timing-function: cubic-bezier(0.8,0,1,1);
+    }
+    50% {
+        transform: none;
+        animation-timing-function: cubic-bezier(0,0,0.2,1);
+    }
+}
+.animate-bounce-low {
+    animation: bounceLow 1.5s infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.text-hero {
+    --tw-gradient-from: #052e16 var(--tw-gradient-from-position);
+    --tw-gradient-to: rgb(5 46 22 / 0) var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+    --tw-gradient-to: #000 var(--tw-gradient-to-position);
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.dark .text-hero {
+    --tw-gradient-from: #4ade80 var(--tw-gradient-from-position);
+    --tw-gradient-to: rgb(74 222 128 / 0) var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+    --tw-gradient-to: #fff var(--tw-gradient-to-position);
 }
+
+
+
+
