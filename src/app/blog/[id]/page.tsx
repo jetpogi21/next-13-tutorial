@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import { TBlog } from "../page";
+import { TPost } from "../page";
 import { notFound } from "next/navigation";
 
 async function getData({ id }: { id: string }) {
@@ -26,7 +26,7 @@ interface CategoryProps {
 const BlogPost: React.FC<CategoryProps> = async ({ params }) => {
   const id = params.id;
 
-  const blog = (await getData({id})) as unknown as TBlog;
+  const blog = (await getData({id})) as unknown as TPost;
   
   const renderParagraphs = () => {
     const paragraphs = [];

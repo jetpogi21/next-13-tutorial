@@ -30,14 +30,13 @@ const Posts: React.FC = () => {
   const { data, isLoading, isError, error, isFetching } = useQuery({
     queryKey: ["posts"],
     queryFn: async () => {
-      const { data } = await axios.get(
-        "https://jsonplaceholder.typicode.com/pots"
-      );
+      const { data } = await axios.get("http://localhost:3002/api/posts");
       return data;
     },
     retry: 1,
   });
 
+  console.log({ data });
   if (isLoading) {
     return <div>Loading...</div>;
   }
