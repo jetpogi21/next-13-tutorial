@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import axiosClient from "../../utils/api";
+import axios from "axios";
 
 export interface TPost {
   userId: number;
@@ -21,9 +22,8 @@ export interface TPost {
 const queryClient = new QueryClient();
 
 //prettier-ignore
-//@ts-expect-error Async Server Component
 const BlogPage: React.FC = async () => {
-
+  
   return (
     <QueryClientProvider client={queryClient}>
       <Blogs />
@@ -32,34 +32,32 @@ const BlogPage: React.FC = async () => {
   );
 };
 
-async function getData() {
-  try {
-    // Make a GET request
-    const { data } = await axiosClient.get("/posts");
-    return data;
-  } catch (error) {
-    //@ts-ignore
-    throw new Error(error.message);
-  }
-}
-
-//@ts-expect-error Async Server Component
-const Blogs: React.FC = async () => {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["blogs"],
-    queryFn: getData,
-    cacheTime: 0,
+const Blogs: React.FC = () => {
+  const { data, isLoading, isError, error, isFetching } = useQuery({
+    queryKey: ["posts"],
+    queryFn: async () => {
+      const { data } = await axiosClient.get("/posts");
+      return data;
+    },
+    retry: 1,
   });
+
+  if (isError) {
+    return <div>Error bitch!</div>;
+  }
 
   if (isLoading) {
     return <div>I'm loading</div>;
   }
 
-  const blogs = data as unknown as TPost[];
+  const blogs = data as unknown as {
+    status: "string";
+    data: { rows: TPost[] };
+  };
 
   return (
     <div className="flex flex-col gap-20">
-      {blogs.map((blog) => (
+      {blogs.data.rows.map((blog) => (
         <div className="flex gap-5" key={blog.id}>
           <div className="relative">
             <Image

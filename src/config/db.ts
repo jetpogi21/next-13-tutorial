@@ -1,13 +1,18 @@
-import { Sequelize } from "sequelize";
-const sequelize = new Sequelize(
-  process.env.DB_NAME!,
-  process.env.DB_USER!,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    dialect: "mysql",
-  }
-);
+import { Dialect, Sequelize } from "sequelize";
+import config from "@/config/config";
+
+const environment = process.env.NODE_ENV;
+
+const dbName = config[environment].database!;
+const dbUser = config[environment].username!;
+const dbPassword = config[environment].password!;
+const dbHost = config[environment].host;
+const dbDialect = config[environment].dialect as Dialect;
+
+const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
+  host: dbHost,
+  dialect: dbDialect,
+});
 
 //This is used to test the database connection
 /* const authenticate = async() => {

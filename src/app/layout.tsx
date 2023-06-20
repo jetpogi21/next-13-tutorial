@@ -1,8 +1,9 @@
-import Footer from "../components/footer/Footer";
-import Header from "../components/header/Header";
+import Footer from "@/components/footer/Footer";
+import Header from "@/components/header/Header";
 import "./globals.css";
 import { Roboto_Flex } from "next/font/google";
-import Theme from "../components/theme/Theme";
+import Theme from "@/components/theme/Theme";
+import AuthProvider from "@/components/auth-provider/AuthProvider";
 
 const roboto = Roboto_Flex({
   subsets: ["latin"],
@@ -23,9 +24,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${roboto.className}`}>
         <Theme>
-          <Header />
-          {children}
-          <Footer />
+          <AuthProvider>
+            <Header />
+            {children}
+            <Footer />
+          </AuthProvider>
         </Theme>
       </body>
     </html>

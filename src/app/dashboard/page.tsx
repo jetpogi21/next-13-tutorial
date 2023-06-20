@@ -9,6 +9,8 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import axiosClient from "@/utils/api";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const queryClient = new QueryClient();
 
@@ -30,13 +32,12 @@ const Posts: React.FC = () => {
   const { data, isLoading, isError, error, isFetching } = useQuery({
     queryKey: ["posts"],
     queryFn: async () => {
-      const { data } = await axios.get("http://localhost:3002/api/posts");
+      const { data } = await axiosClient.get("/posts");
       return data;
     },
     retry: 1,
   });
 
-  console.log({ data });
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -57,12 +58,15 @@ const Posts: React.FC = () => {
 };
 
 const ChildPost: React.FC = () => {
-  const data = queryClient.getQueryData(["posts"]) as unknown as Post[];
+  const data = queryClient.getQueryData(["posts"]) as unknown as {
+    status: "success" | "error";
+    data: { rows: Post[] };
+  };
 
   console.log(data);
   return (
     <div>
-      {data.map((item) => (
+      {data.data.rows.map((item) => (
         <div key={item.id}>
           {item.id}. {item.title}
         </div>

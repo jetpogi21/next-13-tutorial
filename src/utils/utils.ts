@@ -6,7 +6,6 @@ export const getSort = (
   sortValue: string | undefined,
   defaultSort: string = ""
 ): string[] => {
-  console.log("🚀 ~ file: utils.ts:9 ~ sortValue:", sortValue);
   const sortString = sortValue || defaultSort;
 
   return convertSortStringToArray(sortString);
@@ -278,4 +277,29 @@ export function validateRequiredFields(
   }
   // All required fields are present
   return returnJSONResponse({ status: "success" });
+}
+
+// Generates a random session token
+export function generateSessionToken() {
+  const tokenLength = 32;
+  const characters =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let token = "";
+
+  for (let i = 0; i < tokenLength; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    token += characters.charAt(randomIndex);
+  }
+
+  return token;
+}
+
+// Calculates the session expiration date
+export function calculateSessionExpiration() {
+  const sessionDurationInMinutes = 60; // Session duration in minutes
+  const expirationDate = new Date();
+  expirationDate.setTime(
+    expirationDate.getTime() + sessionDurationInMinutes * 60 * 1000
+  );
+  return expirationDate;
 }

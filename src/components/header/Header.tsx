@@ -2,6 +2,7 @@
 import Link from "next/link";
 import React from "react";
 import DarkLightToggle from "../dark-light-toggle/DarkLightToggle";
+import Logout from "@/components/logout/Logout";
 
 const links = [
   { id: 1, name: "Home", href: "/" },
@@ -11,6 +12,7 @@ const links = [
   { id: 5, name: "Contact", href: "/contact" },
   { id: 6, name: "Dashboard", href: "/dashboard" },
 ];
+
 const Header: React.FC = () => {
   return (
     <div className="h-[100px] flex justify-between items-center">
@@ -24,9 +26,7 @@ const Header: React.FC = () => {
             {link.name}
           </Link>
         ))}
-        <button className="px-4 py-1 text-white bg-green-600 rounded sm">
-          Logout
-        </button>
+        <Logout />
       </div>
     </div>
   );
