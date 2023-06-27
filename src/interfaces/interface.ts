@@ -4,6 +4,7 @@ export interface JSONResponse {
   error?: string;
   errorCode?: number;
   sqlMessage?: string;
+  targetField?: string;
 }
 
 export interface SQLField {

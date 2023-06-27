@@ -13,12 +13,13 @@ function handleSequelizeError(error: any) {
       error: error.message,
       data: error.sql,
       sqlMessage: error.original,
-      errorCode: 200,
+      errorCode: 500,
     });
   } else {
     return returnJSONResponse({
       status: "error",
       error: error.message,
+      errorCode: 500,
     });
   }
 }

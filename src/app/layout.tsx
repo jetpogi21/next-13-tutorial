@@ -1,11 +1,10 @@
-import Footer from "@/components/footer/Footer";
-import Header from "@/components/header/Header";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import "./globals.css";
 import { Roboto_Flex } from "next/font/google";
-import Theme from "@/components/theme/Theme";
-import AuthProvider from "@/components/auth-provider/AuthProvider";
+import ClientProviders from "@/components/ClientProviders";
 
-const roboto = Roboto_Flex({
+const inter = Roboto_Flex({
   subsets: ["latin"],
   display: "swap",
 });
@@ -21,15 +20,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${roboto.className}`}>
-        <Theme>
-          <AuthProvider>
-            <Header />
-            {children}
-            <Footer />
-          </AuthProvider>
-        </Theme>
+    <html lang="en" className={`${inter.className} dark`}>
+      <body className="flex flex-col w-full min-h-screen">
+        <ClientProviders>
+          <Header />
+          {children}
+          <Footer />
+        </ClientProviders>
       </body>
     </html>
   );

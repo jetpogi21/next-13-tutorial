@@ -5,7 +5,7 @@ import ContacImage from "public/contact.png";
 
 const Contact: React.FC = () => {
   return (
-    <div className="flex flex-col justify-center gap-32">
+    <div className="flex flex-col justify-center flex-1 w-full max-w-screen-lg gap-32 p-4 mx-auto">
       <h1 className="self-center text-5xl font-extrabold">
         Let's keep in touch
       </h1>
@@ -16,7 +16,7 @@ const Contact: React.FC = () => {
             alt="contact.png"
             fill={true}
             priority={true}
-            className="object-contain animate-bounce-low"
+            className="object-contain animate-bounce-low -z-10"
           />
         </div>
         <form className="flex flex-col flex-1 gap-5 px-5">

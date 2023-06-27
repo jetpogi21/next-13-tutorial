@@ -9,6 +9,7 @@ import { User } from "@/models/UserModel";
 import { compare } from "bcryptjs";
 import { Op } from "sequelize";
 import { nanoid } from "nanoid";
+import { VerificationToken } from "@/models/VerificationTokenModel";
 
 const adapter = SequelizeAdapter(sequelize, { synchronize: false }) as Adapter;
 
@@ -17,6 +18,61 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+    CredentialsProvider({
+      id: "token",
+      name: "Token",
+      type: "credentials",
+      async authorize(credentials, req) {
+        if (!credentials) {
+          throw new Error("Invalid call.");
+        }
+
+        const { token } = credentials;
+
+        if (!token) {
+          throw new Error("Invalid call.");
+        }
+
+        //Start the transaction
+        const transaction = await sequelize.transaction();
+
+        try {
+          //Find the token in the database
+          const verificationToken = await VerificationToken.findOne({
+            where: { token },
+          });
+
+          // If the token exists and is not expired
+          if (
+            verificationToken &&
+            verificationToken.expires.getTime() > Date.now()
+          ) {
+            // Get the related user
+            const user = await User.findByPk(verificationToken.userId);
+
+            if (!user) {
+              throw new Error("User not found.");
+            }
+
+            user.update({ status: "active" });
+
+            // Delete the token from the database
+            //await verificationToken.destroy();
+            await transaction.commit();
+
+            return user.toJSON();
+          } else {
+            throw new Error("Invalid or expired token.");
+          }
+        } catch (err: any) {
+          await transaction.rollback();
+          throw new Error(err.message);
+        }
+      },
+      credentials: {
+        token: { label: "Token" },
+      },
     }),
     CredentialsProvider({
       id: "credentials",

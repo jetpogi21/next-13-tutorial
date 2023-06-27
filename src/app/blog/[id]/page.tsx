@@ -22,7 +22,6 @@ interface CategoryProps {
 }
 
 //prettier-ignore
-//@ts-expect-error Async Server Component
 const BlogPost: React.FC<CategoryProps> = async ({ params }) => {
   const id = params.id;
 
@@ -41,7 +40,7 @@ const BlogPost: React.FC<CategoryProps> = async ({ params }) => {
     return paragraphs;
   };
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col flex-1 w-full max-w-screen-lg gap-20 px-4 mx-auto">
       {/* first row */}
       <div className="flex gap-5">
         {/* blog detail */}

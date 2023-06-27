@@ -11,6 +11,9 @@ import {
 } from "@tanstack/react-query";
 import axiosClient from "@/utils/api";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { Button } from "@/components/ui/Button";
+import { Toaster } from "@/components/ui/Toaster";
+import { toast } from "@/hooks/use-toast";
 
 const queryClient = new QueryClient();
 
@@ -39,14 +42,14 @@ const Posts: React.FC = () => {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="flex-1 px-4">Loading...</div>;
   }
 
   if (isError) {
     if (axios.isAxiosError(error)) {
-      return <div>{error.message}</div>;
+      return <div className="flex-1 px-4">{error.message}</div>;
     } else {
-      return <div>Stack Error</div>;
+      return <div className="flex-1 px-4">Stack Error</div>;
     }
   }
 
@@ -63,14 +66,26 @@ const ChildPost: React.FC = () => {
     data: { rows: Post[] };
   };
 
-  console.log(data);
   return (
-    <div>
-      {data.data.rows.map((item) => (
-        <div key={item.id}>
-          {item.id}. {item.title}
-        </div>
-      ))}
+    <div className="flex-1 w-full max-w-screen-lg px-4 mx-auto">
+      <Button
+        onClick={() => {
+          toast({
+            title: "Scheduled: Catch up",
+            description: "Friday, February 10, 2023 at 5:57 PM",
+            duration: 2000,
+          });
+        }}
+      >
+        Activate Toast
+      </Button>
+      <div>
+        {data?.data?.rows?.map((item) => (
+          <div key={item.id}>
+            {item.id}. {item.title}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

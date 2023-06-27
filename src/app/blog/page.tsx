@@ -10,6 +10,7 @@ import Link from "next/link";
 import React from "react";
 import axiosClient from "../../utils/api";
 import axios from "axios";
+import { cn } from "@/lib/utils";
 
 export interface TPost {
   userId: number;
@@ -22,7 +23,7 @@ export interface TPost {
 const queryClient = new QueryClient();
 
 //prettier-ignore
-const BlogPage: React.FC = async () => {
+const BlogPage: React.FC = () => {
   
   return (
     <QueryClientProvider client={queryClient}>
@@ -31,6 +32,10 @@ const BlogPage: React.FC = async () => {
     
   );
 };
+
+const containerClasses = cn(
+  "flex flex-col flex-1 w-full max-w-screen-lg gap-20 px-4 mx-auto"
+);
 
 const Blogs: React.FC = () => {
   const { data, isLoading, isError, error, isFetching } = useQuery({
@@ -43,11 +48,11 @@ const Blogs: React.FC = () => {
   });
 
   if (isError) {
-    return <div>Error bitch!</div>;
+    return <div className={containerClasses}>Error bitch!</div>;
   }
 
   if (isLoading) {
-    return <div>I'm loading</div>;
+    return <div className={containerClasses}>I'm loading</div>;
   }
 
   const blogs = data as unknown as {
@@ -56,7 +61,7 @@ const Blogs: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-20">
+    <div className={containerClasses}>
       {blogs.data.rows.map((blog) => (
         <div className="flex gap-5" key={blog.id}>
           <div className="relative">
